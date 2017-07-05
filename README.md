@@ -10,3 +10,7 @@ folders.
 
 We use .yml CI files nowadays, a default one you can find in newprojecttemplate
 module.
+
+# License # {#license}
+
+This project is licensed under the MIT License - see the LICENSE-MiloCodeDB.txt file for details
