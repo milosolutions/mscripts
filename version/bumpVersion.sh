@@ -28,6 +28,7 @@ VERSION=${1}
 
 if [ "$VERSION" = "" ]; then
   echo "No version inserted! Please check -h for usage example."
+  exit
 fi
 
 if [ "$TEMPLATE_PROJECT_NAME" = "" ]; then
