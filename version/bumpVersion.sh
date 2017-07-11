@@ -73,7 +73,7 @@ for var in "$@"
 do
 	# incrementing added version
 	if [ "$var" = "-i" ] || [ "$var" = "--increment" ]; then
-		VERSION="$(grep -F 'APP_VERSION =' version.cpp | grep -P -o '([0-9]+\.*)+')"
+		VERSION="$(grep -F 'APP_VERSION =' $VERSION_FILE | grep -P -o '([0-9]+\.*)+')"
 		if [ "$VERSION" = "" ]; then
 			echo
 			echo "Version found in $VERSION_FILE is empty!"
