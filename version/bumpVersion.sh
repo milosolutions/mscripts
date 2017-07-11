@@ -44,6 +44,7 @@ MACOSX_PATH="Info.plist"
 IOS_PATH="Info.plist"
 
 COMMIT=false
+SHA=false
 
 for var in "$@"
 do
@@ -53,8 +54,7 @@ do
 #	exit
   # Adding commit SHA to file
   if [ "$var" = "--sha" ]; then
-	DIR=$(dirname $0)
-	sh $DIR/version.sh
+	SHA=true
   # Commiting changes
   elif [ "$var" = "-c" ] || [ "$var" = "--commit" ]; then
 	COMMIT=true
@@ -104,4 +104,9 @@ if $COMMIT ; then
   echo "$(git commit -m "Bump version to $VERSION")"
 else
   echo Done. Please check if everything is correct using \"git diff\", then commit as usual.
+fi
+
+if $SHA ; then
+	DIR=$(dirname $0)
+	sh $DIR/version.sh
 fi

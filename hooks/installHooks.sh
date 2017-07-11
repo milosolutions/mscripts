@@ -14,8 +14,9 @@ fi
 echo Copying hooks
 
 echo   pre-commit hook
-HOOKSDIR=../../.git/hooks
-cp pre-commit.py $HOOKSDIR/pre-commit
+DIR=$(dirname $0)
+HOOKSDIR=$DIR/../../../.git/hooks
+cp $DIR/pre-commit.py $HOOKSDIR/pre-commit
 
 echo   Updating clang-format binary path
 

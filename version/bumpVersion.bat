@@ -28,11 +28,10 @@ set MACOSX_PATH=Info.plist
 set IOS_PATH=Info.plist
 
 set COMMIT=false
+set SHA=false
 
 FOR %%a IN (%*) DO (
-  IF /I "%%a"=="--sha" (
-	call version.bat
-  )
+  IF /I "%%a"=="--sha" set SHA=true
   IF /I "%%a"=="-c" set COMMIT=true
   IF /I "%%a"=="-commit" set COMMIT=true
 )
@@ -81,6 +80,8 @@ if %COMMIT% == true (
 	git add --all
 	git commit -m "Bump to version %VERSION%"
 )
+
+if %SHA% == true call version.bat
 
 EXIT /B
 
