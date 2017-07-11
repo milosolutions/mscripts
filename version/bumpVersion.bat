@@ -1,6 +1,6 @@
 @echo OFF
 
-set TEMPLATE_PROJECT_NAME=
+set TEMPLATE_PROJECT_NAME=test_proj
 
 echo Default bumpVersion.sh file. Please open it up and check.
 echo.
@@ -36,6 +36,7 @@ set COMMIT=false
 set SHA=false
 set INCREMENT=false
 
+
 FOR %%a IN (%*) DO (
 	IF /I "%%a"=="-i" set INCREMENT=true
 	IF /I "%%a"=="--increment" set INCREMENT=true
@@ -44,47 +45,45 @@ FOR %%a IN (%*) DO (
 	IF /I "%%a"=="-commit" set COMMIT=true
 )
 
-if %INCREMENT% == true (
-	goto :increment_version
-	:increment_return
-)
+if %INCREMENT% == true goto :increment_version
+:increment_return
 
 if not "%VERSION:~0,1%" == "-" (
 	REM doxygen
 	if exist %DOXYGEN_FILE% (
-		Powershell.exe -executionpolicy remotesigned -File replaceString.ps1 %DOXYGEN_FILE% "PROJECT_NUMBER = .*" "PROJECT_NUMBER = %VERSION%"
+		Powershell.exe -executionpolicy remotesigned -File %DIR%\replaceString.ps1 %DOXYGEN_FILE% "PROJECT_NUMBER = .*" "PROJECT_NUMBER = %VERSION%"
 		MOVE %DOXYGEN_FILE%.tmp %DOXYGEN_FILE%
 	)
 
 	REM version.cpp
 	if exist %VERSION_FILE% (
-		Powershell.exe -executionpolicy remotesigned -File replaceString.ps1 %VERSION_FILE% "APP_VERSION =.*" "APP_VERSION = \"%VERSION%\";"
+		Powershell.exe -executionpolicy remotesigned -File %DIR%\replaceString.ps1 %VERSION_FILE% "APP_VERSION =.*" "APP_VERSION = \"%VERSION%\";"
 		MOVE %VERSION_FILE%.tmp %VERSION_FILE%
 	)
 
 	REM Android:
 	if exist %ANDROID_MANIFEST_PATH% (
-		Powershell.exe -executionpolicy remotesigned -File replaceString.ps1 %ANDROID_MANIFEST_PATH% "android:versionName=\"[A-Za-z0-9_\.]*\"" "android:versionName=\"%VERSION%\""
+		Powershell.exe -executionpolicy remotesigned -File %DIR%\replaceString.ps1 %ANDROID_MANIFEST_PATH% "android:versionName=\"[A-Za-z0-9_\.]*\"" "android:versionName=\"%VERSION%\""
 		MOVE %ANDROID_MANIFEST_PATH%.tmp %ANDROID_MANIFEST_PATH%
 	)
 
 	REM Mac OS X
 	if exist %MACOSX_PATH% (
-		Powershell.exe -executionpolicy remotesigned -File replaceString.ps1 %MACOSX_PATH% "<string>[0-9]*\.[0-9]*\.[0-9]*</string>" "<string>%VERSION%</string>"
+		Powershell.exe -executionpolicy remotesigned -File %DIR%\replaceString.ps1 %MACOSX_PATH% "<string>[0-9]*\.[0-9]*\.[0-9]*</string>" "<string>%VERSION%</string>"
 		MOVE %MACOSX_PATH%.tmp %MACOSX_PATH%
 	)
 
 	REM iOS
 	if exist %IOS_PATH% (
-		Powershell.exe -executionpolicy remotesigned -File replaceString.ps1 %IOS_PATH% "<string>[0-9]*\.[0-9]*\.[0-9]*</string>" "<string>%VERSION%</string>"
+		Powershell.exe -executionpolicy remotesigned -File %DIR%\replaceString.ps1 %IOS_PATH% "<string>[0-9]*\.[0-9]*\.[0-9]*</string>" "<string>%VERSION%</string>"
 		MOVE %IOS_PATH%.tmp %IOS_PATH%
 	)
 
 	REM Windows:
 	if exist %WINDOWS_RC_FILE_PATH% (
 		set RC_VER=%VERSION:.=,%
-		Powershell.exe -executionpolicy remotesigned -File replaceString.ps1 %WINDOWS_RC_FILE_PATH% "^        FILEVERSION .*" "        FILEVERSION %RC_VER%"
-		Powershell.exe -executionpolicy remotesigned -File replaceString.ps1 %WINDOWS_RC_FILE_PATH%.tmp "^        PRODUCTVERSION .*" "        PRODUCTVERSION %RC_VER%"
+		Powershell.exe -executionpolicy remotesigned -File %DIR%\replaceString.ps1 %WINDOWS_RC_FILE_PATH% "^        FILEVERSION .*" "        FILEVERSION %RC_VER%"
+		Powershell.exe -executionpolicy remotesigned -File %DIR%\replaceString.ps1 %WINDOWS_RC_FILE_PATH%.tmp "^        PRODUCTVERSION .*" "        PRODUCTVERSION %RC_VER%"
 		MOVE %WINDOWS_RC_FILE_PATH%.tmp.tmp %WINDOWS_RC_FILE_PATH%
 	)
 )
@@ -102,7 +101,7 @@ EXIT /B
 REM ==== FUNCTIONS =====
 
 :increment_version
-Powershell.exe -executionpolicy remotesigned -File incrementVersion.ps1 %VERSION_FILE%
+Powershell.exe -executionpolicy remotesigned -File %DIR%\incrementVersion.ps1 %VERSION_FILE%
 set NEW_VERSION_FILE=new_version.txt
 set VERSION=
 if exist %NEW_VERSION_FILE% (
