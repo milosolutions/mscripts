@@ -6,7 +6,7 @@
 # This script will update version strings for Android, Mac OS X, 
 # iOS, and Windows versions. 
 
-TEMPLATE_PROJECT_NAME=""
+TEMPLATE_PROJECT_NAME="test"
 
 echo Default bumpVersion.sh file. Please open it up and check.
 if [ "$TEMPLATE_PROJECT_NAME" = "" ]; then
@@ -44,22 +44,6 @@ MACOSX_PATH="Info.plist"
 IOS_PATH="Info.plist"
 
 COMMIT=false
-# Function for incrementing version number
-increment_version ()
-{
-  declare -a part=( ${1//\./ } )
-  declare    new
-  declare -i carry=1
-
-  for (( CNTR=${#part[@]}-1; CNTR>=0; CNTR-=1 )); do
-	len=${#part[CNTR]}
-	new=$((part[CNTR]+carry))
-	[ ${#new} -gt $len ] && carry=1 || carry=0
-	[ $CNTR -gt 0 ] && part[CNTR]=${new: -len} || part[CNTR]=${new}
-  done
-  new="${part[*]}"
-  echo -e "${new// /.}"
-} 
 
 for var in "$@"
 do
@@ -79,7 +63,10 @@ do
   fi
 done
 
-if [[ $VERSION != "-"* ]]; then
+if echo $VERSION | grep -q "-" 
+then
+	:
+else
 	#doxygen
 	sed -i "s/^PROJECT_NUMBER = .*/PROJECT_NUMBER = $VERSION/" $DOXYGEN_FILE
 
