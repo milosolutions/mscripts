@@ -26,7 +26,5 @@ SOFTWARE.
 #define VERSION_H
 
 extern const char *GIT_COMMIT_ID;
-extern const char *GIT_APP_VERSION;
-extern const char *GIT_APP_VERSION_SHORT;
 
 #endif // VERSION_H
