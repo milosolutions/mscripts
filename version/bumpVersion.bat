@@ -31,7 +31,7 @@ set COMMIT=false
 
 FOR %%a IN (%*) DO (
   IF /I "%%a"=="--sha" (
-
+	call version.bat
   )
   IF /I "%%a"=="-c" set COMMIT=true
   IF /I "%%a"=="-commit" set COMMIT=true

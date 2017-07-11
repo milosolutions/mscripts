@@ -6,7 +6,7 @@
 # This script will update version strings for Android, Mac OS X, 
 # iOS, and Windows versions. 
 
-TEMPLATE_PROJECT_NAME="test"
+TEMPLATE_PROJECT_NAME=""
 
 echo Default bumpVersion.sh file. Please open it up and check.
 if [ "$TEMPLATE_PROJECT_NAME" = "" ]; then
