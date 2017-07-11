@@ -1,2 +1,3 @@
 DIR=$(dirname $0)
-echo "const char *GIT_COMMIT_ID = \"$(git -C "$DIR" rev-parse @)\";" > "$DIR/version.cpp"
+SHA=$(git -C "$DIR" rev-parse @)
+sed -i "s/GIT_COMMIT_ID =.*/GIT_COMMIT_ID = \"$SHA\";/" "$DIR/version.cpp"

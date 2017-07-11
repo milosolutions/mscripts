@@ -6,37 +6,41 @@
 # This script will update version strings for Android, Mac OS X, 
 # iOS, and Windows versions. 
 
-TEMPLATE_PROJECT_NAME=""
+TEMPLATE_PROJECT_NAME="test"
 
 echo Default bumpVersion.sh file. Please open it up and check.
+echo
+
 if [ "$TEMPLATE_PROJECT_NAME" = "" ]; then
-	echo See variables in this script: some of them are probably not needed 
-	echo in your project.
+	echo
+	echo See variables in this script: template project name not set
 	echo Exiting!
 	exit
 fi
 
 if [ "${1}" = "-h" ] || [ "${1}" = "--help" ]; then
-  echo Usage: bumpVersion.sh [VERSION] [--sha] [--commit/-c] 
-  echo Need to be run from project directory!
-  echo 
-  echo Bump version number on all platforms. Use on Unix-like operating systems.
-  echo Please verify with git diff before commiting.
-  echo
-  echo VERSION should be something like: 1.2.3
-  echo Other formats are not supported!
-  exit
+	echo
+	echo Usage: bumpVersion.sh [VERSION] [--sha] [--commit/-c] 
+	echo Need to be run from project directory!
+	echo 
+	echo Bump version number on all platforms. Use on Unix-like operating systems.
+	echo Please verify with git diff before commiting.
+	echo
+	echo VERSION should be something like: 1.2.3
+	echo Other formats are not supported!
+	exit
+fi
+
+if [ "$1" = "" ]; then
+	echo "No version inserted! Please check -h for usage example."
+	exit
 fi
 
 VERSION=${1}
-
-if [ "$VERSION" = "" ]; then
-  echo "No version inserted! Please check -h for usage example."
-  exit
-fi
+DIR=$(dirname $0)
 
 DOXYGEN_FILE="$TEMPLATE_PROJECT_NAME.doxyfile"
-PRO_FILE="$TEMPLATE_PROJECT_NAME.pro"
+VERSION_FILE="$DIR/version.cpp"
 WINDOWS_RC_FILE_PATH="$TEMPLATE_PROJECT_NAME.rc"
 NSIS_PATH="$TEMPLATE_PROJECT_NAME.nsi"
 ANDROID_MANIFEST_PATH="AndroidManifest.xml"
@@ -48,19 +52,18 @@ SHA=false
 
 for var in "$@"
 do
-  # incrementing added version
-#  if [ "$var" = "-i" ] || [ "$var" = "--increment" ]; then
-#    increment_version $VERSION
-#	exit
-  # Adding commit SHA to file
-  if [ "$var" = "--sha" ]; then
-	SHA=true
-  # Commiting changes
-  elif [ "$var" = "-c" ] || [ "$var" = "--commit" ]; then
-	COMMIT=true
-  else
-   :
-  fi
+	# incrementing added version
+	if [ "$var" = "-i" ] || [ "$var" = "--increment" ]; then
+		:
+	# Adding commit SHA to file
+	elif [ "$var" = "--sha" ]; then
+		SHA=true
+	# Commiting changes
+	elif [ "$var" = "-c" ] || [ "$var" = "--commit" ]; then
+		COMMIT=true
+	else
+		:
+	fi
 done
 
 if echo $VERSION | grep -q "-" 
@@ -70,8 +73,8 @@ else
 	#doxygen
 	sed -i "s/^PROJECT_NUMBER = .*/PROJECT_NUMBER = $VERSION/" $DOXYGEN_FILE
 
-	# qmake
-	sed -i "s/^VERSION=.*/VERSION=$VERSION/" $PRO_FILE
+	# version.cpp
+	sed -i "s/APP_VERSION =.*/APP_VERSION = \"$VERSION\";/" $VERSION_FILE
 
 	# Android:
 	sed -i "s/android:versionName=\"[A-Za-z0-9_\.]*\"/android:versionName=\"$VERSION\"/" $ANDROID_MANIFEST_PATH
@@ -99,14 +102,15 @@ fi
 
 # Commiting changes if -c was added
 if $COMMIT ; then
-  echo Done. Commiting changes...
-  echo "$(git add --all)"
-  echo "$(git commit -m "Bump version to $VERSION")"
+	echo
+	echo Done. Commiting changes...
+	echo "$(git add --all)"
+	echo "$(git commit -m "Bump version to $VERSION")"
 else
-  echo Done. Please check if everything is correct using \"git diff\", then commit as usual.
+	echo
+	echo Done. Please check if everything is correct using \"git diff\", then commit as usual.
 fi
 
 if $SHA ; then
-	DIR=$(dirname $0)
 	sh $DIR/version.sh
 fi
