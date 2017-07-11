@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Template bumpVerion file from Milo Solutions. Copyright 2016.
 #
@@ -6,7 +6,24 @@
 # This script will update version strings for Android, Mac OS X, 
 # iOS, and Windows versions. 
 
-TEMPLATE_PROJECT_NAME="test"
+increment_version ()
+{
+  declare -a part=( ${1//\./ } )
+  declare    new
+  declare -i carry=1
+
+  for (( CNTR=${#part[@]}-1; CNTR>=0; CNTR-=1 )); do
+    len=${#part[CNTR]}
+    new=$((part[CNTR]+carry))
+    [ ${#new} -gt $len ] && carry=1 || carry=0
+    [ $CNTR -gt 0 ] && part[CNTR]=${new: -len} || part[CNTR]=${new}
+  done
+  new="${part[*]}"
+  new=${new// /.}
+  VERSION=$new
+} 
+
+TEMPLATE_PROJECT_NAME=""
 
 echo Default bumpVersion.sh file. Please open it up and check.
 echo
@@ -28,11 +45,13 @@ if [ "${1}" = "-h" ] || [ "${1}" = "--help" ]; then
 	echo
 	echo VERSION should be something like: 1.2.3
 	echo Other formats are not supported!
+	echo Exiting!
 	exit
 fi
 
 if [ "$1" = "" ]; then
-	echo "No version inserted! Please check -h for usage example."
+	echo No version inserted! Please check -h for usage example.
+	echo Exiting!
 	exit
 fi
 
@@ -54,7 +73,14 @@ for var in "$@"
 do
 	# incrementing added version
 	if [ "$var" = "-i" ] || [ "$var" = "--increment" ]; then
-		:
+		VERSION="$(grep -F 'APP_VERSION =' version.cpp | grep -P -o '([0-9]+\.*)+')"
+		if [ "$VERSION" = "" ]; then
+			echo
+			echo "Version found in $VERSION_FILE is empty!"
+			echo Exiting!
+			exit
+		fi
+		increment_version $VERSION
 	# Adding commit SHA to file
 	elif [ "$var" = "--sha" ]; then
 		SHA=true
@@ -106,9 +132,11 @@ if $COMMIT ; then
 	echo Done. Commiting changes...
 	echo "$(git add --all)"
 	echo "$(git commit -m "Bump version to $VERSION")"
+	echo Exiting!
 else
 	echo
 	echo Done. Please check if everything is correct using \"git diff\", then commit as usual.
+	echo Exiting!
 fi
 
 if $SHA ; then

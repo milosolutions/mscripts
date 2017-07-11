@@ -1,6 +1,6 @@
 @echo OFF
 
-set TEMPLATE_PROJECT_NAME=test
+set TEMPLATE_PROJECT_NAME=
 
 echo Default bumpVersion.sh file. Please open it up and check.
 echo.
@@ -10,7 +10,7 @@ if %1% == --help goto help
 if "%1%" == "" (
 	echo.
 	echo No version inserted! Please check -h for usage example.
-	exit /B
+	EXIT /B
 )
 if "%TEMPLATE_PROJECT_NAME%" == "" (
 	echo.
@@ -22,6 +22,7 @@ if "%TEMPLATE_PROJECT_NAME%" == "" (
 set VERSION=%1
 set DIR=%~dp0
 
+REM files
 set DOXYGEN_FILE=%TEMPLATE_PROJECT_NAME%.doxyfile
 set VERSION_FILE=%DIR%\version.cpp
 set WINDOWS_RC_FILE_PATH=%TEMPLATE_PROJECT_NAME%.rc
@@ -30,13 +31,22 @@ set ANDROID_MANIFEST_PATH=AndroidManifest.xml
 set MACOSX_PATH=Info.plist
 set IOS_PATH=Info.plist
 
+REM commands
 set COMMIT=false
 set SHA=false
+set INCREMENT=false
 
 FOR %%a IN (%*) DO (
-  IF /I "%%a"=="--sha" set SHA=true
-  IF /I "%%a"=="-c" set COMMIT=true
-  IF /I "%%a"=="-commit" set COMMIT=true
+	IF /I "%%a"=="-i" set INCREMENT=true
+	IF /I "%%a"=="--increment" set INCREMENT=true
+	IF /I "%%a"=="--sha" set SHA=true
+	IF /I "%%a"=="-c" set COMMIT=true
+	IF /I "%%a"=="-commit" set COMMIT=true
+)
+
+if %INCREMENT% == true (
+	goto :increment_version
+	:increment_return
 )
 
 if not "%VERSION:~0,1%" == "-" (
@@ -90,6 +100,20 @@ if %SHA% == true call version.bat
 EXIT /B
 
 REM ==== FUNCTIONS =====
+
+:increment_version
+Powershell.exe -executionpolicy remotesigned -File incrementVersion.ps1 %VERSION_FILE%
+set NEW_VERSION_FILE=new_version.txt
+set VERSION=
+if exist %NEW_VERSION_FILE% (
+	for /f "delims=" %%x in ('type %NEW_VERSION_FILE%') do set VERSION=%%x
+	DEL %NEW_VERSION_FILE%
+) else (
+	echo Version found in %VERSION_FILE% is empty!
+	echo Exiting!
+	EXIT /B
+)
+goto :increment_return
 
 :help
 echo.
