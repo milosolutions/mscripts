@@ -25,6 +25,9 @@ SOFTWARE.
 #ifndef VERSION_H
 #define VERSION_H
 
-extern const char *GIT_COMMIT_ID;
+#include <QString>
+
+extern const QString GIT_COMMIT_ID;
+extern const QString APP_VERSION;
 
 #endif // VERSION_H

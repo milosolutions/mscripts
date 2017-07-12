@@ -1,5 +1,10 @@
 INCLUDEPATH += $${PWD}
 
+HEADERS += $${PWD}/version.h
+SOURCES += $${PWD}/version.cpp
+
+DEFINES += VERSION
+
 VERSION_DEPEND = $${PWD}/../.git   # path to git directory in project
 win32 {
    win32-g++ {

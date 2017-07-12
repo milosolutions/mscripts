@@ -2,7 +2,6 @@
 
 When not added with project template in installer:
 * Include version.pri to your project.
-* Add version.cpp to your .gitignore.
 
 # Scripts
 
