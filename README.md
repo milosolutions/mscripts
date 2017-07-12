@@ -16,7 +16,9 @@ Please read [version/README] (version/README.md)
 
 | Name | Discription | Run directory |
 | - | - | - |
-| installHooks.sh | Shell script. Install pre-commit hook which checks code formatting. | Any |
+| mgit-hooks-installer.py | Python script. Install pre-commit hook in git folder. | Project directory |
+| mclang-format.py | Python script. Called by installed hook. Checks formatting in changed code. | - |
+| mclang-tidy.py | Python script. Called by installed hook. Checks for compilation errors. | - |
 
 ### Mobile
 
