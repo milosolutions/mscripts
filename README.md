@@ -1,10 +1,12 @@
-Milo Code DB main ([online](https://qtdocs.milosolutions.com/milo-code-db/main/))
+\anchor milodatabaseciscripts 
+
+Milo Code DB main ([online](https://qtdocs.milosolutions.com/milo-code-db/main/) | [offline](\ref milodatabasemain)) 
 
 This repository contains example/ template scripts that can help when setting up project.
 
 Feel free to use them - well tested are ones located in "version", "hooks", "others", "mobile" folders.
 
-# Scripts
+# Scripts # {#scripts} 
 
 ### Version
 
@@ -36,6 +38,6 @@ Please read [version/README] (version/README.md)
 | - | - | - |
 | mattermost-notification.sh | Shell script. Send info message on Mattermost. Assigned to hook. | Any |
 
-# License
+# License # {#license} 
 
 This project is licensed under the MIT License - see the LICENSE-MiloCodeDB.txt file for details
