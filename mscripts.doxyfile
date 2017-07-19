@@ -5,10 +5,10 @@
 
 DOXYFILE_ENCODING = UTF-8
 
-PROJECT_NAME = cibuildscripts
+PROJECT_NAME = MScripts
 PROJECT_NUMBER = 0.0.1
-PROJECT_BRIEF = "Example build scripts for GitLab CI"
-#PROJECT_LOGO = ci-build-scripts.png
+PROJECT_BRIEF = "Example scripts for project development"
+#PROJECT_LOGO = mscripts.png
 
 OUTPUT_DIRECTORY = doc/
 
@@ -25,7 +25,7 @@ EXTRACT_STATIC = YES
 
 DISTRIBUTE_GROUP_DOC = YES
 
-GENERATE_TAGFILE = cibuildscripts.doxytag
+GENERATE_TAGFILE = mscripts.doxytag
 GENERATE_HTML = YES
 GENERATE_LATEX = NO
 GENERATE_RTF = NO
@@ -51,5 +51,5 @@ EXTERNAL_PAGES = YES
 
 HAVE_DOT = NO
 
-TAGFILES = ../../../../milocodedatabase.doxytag=../../../../../../doc/html
+TAGFILES = ../../../../../mcdb-installer.doxytag=../../../../../doc/html
 
