@@ -100,7 +100,7 @@ else
 	sed -i "s/^PROJECT_NUMBER = .*/PROJECT_NUMBER = $VERSION/" $DOXYGEN_FILE
 
 	# version.cpp
-	sed -i "s/APP_VERSION =.*/APP_VERSION = QStringLiteral(\"$VERSION\");/" $VERSION_FILE
+	sed -i "s/APP_VERSION =.*/APP_VERSION = QByteArray(\"$VERSION\");/" $VERSION_FILE
 
 	# Android:
 	sed -i "s/android:versionName=\"[A-Za-z0-9_\.]*\"/android:versionName=\"$VERSION\"/" $ANDROID_MANIFEST_PATH

@@ -25,9 +25,9 @@ SOFTWARE.
 #ifndef VERSION_H
 #define VERSION_H
 
-#include <QString>
+#include <QByteArray>
 
-extern const QString GIT_COMMIT_ID;
-extern const QString APP_VERSION;
+extern const QByteArray GIT_COMMIT_ID;
+extern const QByteArray APP_VERSION;
 
 #endif // VERSION_H

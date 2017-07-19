@@ -57,7 +57,7 @@ if not "%VERSION:~0,1%" == "-" (
 
 	REM version.cpp
 	if exist %VERSION_FILE% (
-		Powershell.exe -executionpolicy remotesigned -File %DIR%\replaceString.ps1 %VERSION_FILE% "APP_VERSION =.*" "APP_VERSION = QStringLiteral(\"%VERSION%\");"
+		Powershell.exe -executionpolicy remotesigned -File %DIR%\replaceString.ps1 %VERSION_FILE% "APP_VERSION =.*" "APP_VERSION = QByteArray(\"%VERSION%\");"
 		MOVE %VERSION_FILE%.tmp %VERSION_FILE%
 	)
 

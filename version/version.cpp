@@ -1,4 +1,4 @@
 #include "version.h"
 
-const QString GIT_COMMIT_ID = QString();
-const QString APP_VERSION = QStringLiteral("0.0.1");
+const QByteArray GIT_COMMIT_ID;
+const QByteArray APP_VERSION = QByteArray("0.0.1");
