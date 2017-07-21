@@ -1,21 +1,22 @@
 INCLUDEPATH += $${PWD}
 
 HEADERS += $${PWD}/version.h
-SOURCES += $${PWD}/version.cpp
+SOURCES += $${PWD}/version.cpp $$PWD/versiongit.cpp
 
 DEFINES += VERSION
 
-VERSION_DEPEND = $${PWD}/../../../.git   # path to git directory in project
+versionTarget.target = $${PWD}/version.h
+versionTarget.depends = FORCE
 win32 {
    win32-g++ {
-      version_compiler.commands = $${PWD}/version.bat
+      versionTarget.commands = $${PWD}/version.bat
    } else {
-      version_compiler.commands = call $${PWD}/version.bat
+      versionTarget.commands = call $${PWD}/version.bat
    }
 } else {
-    version_compiler.commands = sh $${PWD}/version.sh
+    versionTarget.commands = sh $${PWD}/version.sh
 }
-version_compiler.input = VERSION_DEPEND
-version_compiler.CONFIG = target_predeps no_link
-version_compiler.output = $${PWD}/version.cpp.o
-QMAKE_EXTRA_COMPILERS += version_compiler
+PRE_TARGETDEPS += $${PWD}/version.h
+QMAKE_EXTRA_TARGETS += versionTarget
+
+DEPENDPATH = $${PWD}/version.h
