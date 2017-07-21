@@ -22,12 +22,8 @@ SOFTWARE.
 *******************************************************************************/
 
 
-#ifndef VERSION_H
-#define VERSION_H
-
+#pragma once
 #include <QByteArray>
 
 extern const QByteArray GIT_COMMIT_ID;
 extern const QByteArray APP_VERSION;
-
-#endif // VERSION_H

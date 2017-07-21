@@ -3,6 +3,15 @@ INCLUDEPATH += $${PWD}
 HEADERS += $${PWD}/version.h
 SOURCES += $${PWD}/version.cpp $$PWD/versiongit.cpp
 
+OTHER_FILES += .gitignore \
+    bumpVersion.sh \
+    bumpVersion.bat \
+    README.md \
+    replaceString.ps1 \
+    version.bat \
+    version.sh \
+    versiongit.cpp.sample
+
 DEFINES += VERSION
 
 versionTarget.target = $${PWD}/versiongit.cpp
