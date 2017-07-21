@@ -5,7 +5,7 @@ SOURCES += $${PWD}/version.cpp $$PWD/versiongit.cpp
 
 DEFINES += VERSION
 
-versionTarget.target = $${PWD}/version.h
+versionTarget.target = $${PWD}/versiongit.cpp
 versionTarget.depends = FORCE
 win32 {
    win32-g++ {
@@ -16,7 +16,7 @@ win32 {
 } else {
     versionTarget.commands = sh $${PWD}/version.sh
 }
-PRE_TARGETDEPS += $${PWD}/version.h
+PRE_TARGETDEPS += $${PWD}/versiongit.cpp
 QMAKE_EXTRA_TARGETS += versionTarget
 
-DEPENDPATH = $${PWD}/version.h
+DEPENDPATH = $${PWD}
