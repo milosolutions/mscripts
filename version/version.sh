@@ -1,3 +1,7 @@
+# Template version script file from Milo Solutions. Copyright 2016.
+#
+# Saves new last commit SHA to versiongit.cpp
+#
 DIR=$(dirname $0)
 SHA=$(git -C "$DIR" rev-parse @)
 echo "Dir is: $DIR"

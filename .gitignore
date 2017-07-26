@@ -1,2 +1,4 @@
 doc/html/
 *.doxytag
+build-*
+*.user

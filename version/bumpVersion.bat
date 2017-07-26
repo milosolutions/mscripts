@@ -1,12 +1,16 @@
+REM Template bumpVerion file from Milo Solutions. Copyright 2016.
+REM
+REM Use this script to bump version of application to a new value.
+REM This script will update version strings for Android, Mac OS X, 
+REM iOS, and Windows versions. 
+REM
 @echo OFF
 
-set TEMPLATE_PROJECT_NAME=test_proj
+set TEMPLATE_PROJECT_NAME=default
 
 echo Default bumpVersion.sh file. Please open it up and check.
 echo.
 
-if %1% == -h goto help
-if %1% == --help goto help
 if "%1%" == "" (
 	echo.
 	echo No version inserted! Please check -h for usage example.
@@ -18,6 +22,8 @@ if "%TEMPLATE_PROJECT_NAME%" == "" (
 	echo Exiting!
 	EXIT /B
 )
+if %1% == -h goto help
+if %1% == --help goto help
 
 set VERSION=%1
 set DIR=%~dp0
@@ -38,17 +44,27 @@ set INCREMENT=false
 
 
 FOR %%a IN (%*) DO (
-	IF /I "%%a"=="-i" set INCREMENT=true
-	IF /I "%%a"=="--increment" set INCREMENT=true
-	IF /I "%%a"=="--sha" set SHA=true
-	IF /I "%%a"=="-c" set COMMIT=true
-	IF /I "%%a"=="-commit" set COMMIT=true
+	IF /I "%%a"=="/i" set INCREMENT=true
+	IF /I "%%a"=="/I" set INCREMENT=true
+	IF /I "%%a"=="/sha" set SHA=true
+	IF /I "%%a"=="/SHA" set SHA=true
+	IF /I "%%a"=="/c" set COMMIT=true
+	IF /I "%%a"=="/C" set COMMIT=true
 )
 
 if %INCREMENT% == true goto :increment_version
 :increment_return
 
-if not "%VERSION:~0,1%" == "-" (
+if not "%VERSION:~0,1%" == "/" (
+REM checking version format
+	powershell -Command "& { '%VERSION%' -match '^([0-9]+\.*)+$' | Out-File check_version.txt }"
+	for /f "delims=" %%x in ('type check_version.txt') do ( 
+		DEL check_version.txt
+		if "%%x" == "False" (
+			echo.Version number has wrong format! Please check -h for usage example.
+			exit /B
+		)
+	)
 	REM doxygen
 	if exist %DOXYGEN_FILE% (
 		Powershell.exe -executionpolicy remotesigned -File %DIR%\replaceString.ps1 %DOXYGEN_FILE% "PROJECT_NUMBER = .*" "PROJECT_NUMBER = %VERSION%"
@@ -88,13 +104,14 @@ if not "%VERSION:~0,1%" == "-" (
 	)
 )
 
+if %SHA% == true call version.bat
+
 REM commiting after changes
 if %COMMIT% == true (
 	git add --all
 	git commit -m "Bump to version %VERSION%"
+	if %SHA% == true call version.bat
 )
-
-if %SHA% == true call version.bat
 
 EXIT /B
 
@@ -115,12 +132,16 @@ if exist %NEW_VERSION_FILE% (
 goto :increment_return
 
 :help
-echo.
-echo Usage: bumpVersion.sh [VERSION] [--sha] [--commit/-c]
-echo Need to be run from project directory!
-echo.
-echo Bump version number on all platforms. Use on Unix-like operating systems.
+echo Bump version number on all platforms.
 echo Please verify with git diff before commiting.
+echo NOTE: Need to be run from project directory!
+echo.
+echo bumpVersion.bat [VERSION] [/I] [/C] [/SHA]
+echo.
+echo   /I		Read version from version sources, increment it and saves 
+echo			to project files.
+echo   /C		Create commit after all changes are made.
+echo   /SHA		Update git sha in version sources.
 echo.
 echo VERSION should be something like: 1.2.3
 echo Other formats are not supported!

@@ -1,3 +1,8 @@
+# Template increment version script file from Milo Solutions. Copyright 2016.
+#
+# Load version number from file, increment it and save to text file.
+# Usage: incrementVersion.ps1 FILE_NAME
+#
 param([string]$fileName)
 if([string](Get-Content -path $fileName) -match '([0-9]+\.*)+')
 {

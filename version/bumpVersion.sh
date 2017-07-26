@@ -23,7 +23,7 @@ increment_version ()
   VERSION=$new
 } 
 
-TEMPLATE_PROJECT_NAME=""
+TEMPLATE_PROJECT_NAME="default"
 
 echo Default bumpVersion.sh file. Please open it up and check.
 echo
@@ -36,16 +36,19 @@ if [ "$TEMPLATE_PROJECT_NAME" = "" ]; then
 fi
 
 if [ "${1}" = "-h" ] || [ "${1}" = "--help" ]; then
+	echo Bump version number on all platforms.
+	echo Usage: bumpVersion.sh [VERSION] [OPTION]
+	echo NOTE: Need to be run from project directory!
+	echo Example: bumpVersion.sh 1.2.3 -c
 	echo
-	echo Usage: bumpVersion.sh [VERSION] [--sha] [--commit/-c] 
-	echo Need to be run from project directory!
-	echo 
-	echo Bump version number on all platforms. Use on Unix-like operating systems.
-	echo Please verify with git diff before commiting.
+	echo '   -i, --increment	Read version from version sources, increments'
+	echo '			it and saves to project files.'
+	echo '   -c --commit		Create commit after all changes are made.'
+	echo '   --sha		Update git sha in version sources.'
 	echo
 	echo VERSION should be something like: 1.2.3
 	echo Other formats are not supported!
-	echo Exiting!
+	echo Please verify with git diff before commiting.
 	exit
 fi
 
@@ -96,6 +99,14 @@ if echo $VERSION | grep -q "-"
 then
 	:
 else
+# checking version format
+re="^([0-9]+\.*)+$"
+if [[ $VERSION =~ $re ]]; then 
+	:
+else 
+	echo Version number has wrong format! Please check -h for usage example.
+	exit
+fi
 	#doxygen
 	sed -i "s/^PROJECT_NUMBER = .*/PROJECT_NUMBER = $VERSION/" $DOXYGEN_FILE
 
@@ -126,19 +137,22 @@ else
 	sed -i "s#<string>[0-9]*\.[0-9]*\.[0-9]*</string>#<string>$VERSION</string>#" $IOS_PATH
 fi
 
+if $SHA ; then
+	sh $DIR/version.sh
+fi
+
 # Commiting changes if -c was added
 if $COMMIT ; then
 	echo
 	echo Done. Commiting changes...
 	echo "$(git add --all)"
 	echo "$(git commit -m "Bump version to $VERSION")"
+	if $SHA ; then
+		sh $DIR/version.sh
+	fi
 	echo Exiting!
 else
 	echo
 	echo Done. Please check if everything is correct using \"git diff\", then commit as usual.
 	echo Exiting!
-fi
-
-if $SHA ; then
-	sh $DIR/version.sh
 fi

@@ -1,3 +1,7 @@
+REM Template version script file from Milo Solutions. Copyright 2016.
+REM
+REM Saves new last commit SHA to versiongit.cpp
+REM
 @ECHO OFF
 
 set DIR=%~dp0
