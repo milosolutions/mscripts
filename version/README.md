@@ -1,3 +1,5 @@
+\anchors versions
+[TOC]
 # Deployment
 
 When not added with project template in installer:
