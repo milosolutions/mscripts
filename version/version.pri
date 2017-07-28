@@ -1,5 +1,10 @@
 INCLUDEPATH += $${PWD}
 
+!exists($$PWD/versiongit.cpp) {
+    win32:system(copy versiongit.cpp.sample versiongit.cpp)
+    unix:system(cp versiongit.cpp.sample versiongit.cpp)
+}
+
 HEADERS += $${PWD}/version.h
 SOURCES += $${PWD}/version.cpp $${PWD}/versiongit.cpp
 
@@ -21,9 +26,6 @@ exists($$PWD/versiongit.cpp) {
 versionTarget.target = $${PWD}/versiongit.cpp
 versionTarget.depends = FORCE
 win32 {
-    !exists($$PWD/versiongit.cpp) {
-        system(copy versiongit.cpp.sample versiongit.cpp)
-    }
     win32-g++ {
         versionTarget.commands = $${PWD}/version.bat
     } else {
@@ -31,8 +33,8 @@ win32 {
     }
 } else {
     versionTarget.commands = sh $${PWD}/version.sh
+    PRE_TARGETDEPS += $${PWD}/versiongit.cpp
 }
-PRE_TARGETDEPS += $${PWD}/versiongit.cpp
 QMAKE_EXTRA_TARGETS += versionTarget
 
 DEPENDPATH = $${PWD}
