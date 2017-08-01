@@ -1,3 +1,10 @@
+# Copyright (C) 2016 by Milo Solutions
+#
+# qmake file for version module
+#
+# Distributed under terms specified in LICENSE file
+#
+
 INCLUDEPATH += $${PWD}
 
 !exists($$PWD/versiongit.cpp) {
