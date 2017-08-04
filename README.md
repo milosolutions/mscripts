@@ -22,6 +22,11 @@ Please read [version/README](version/README.md)
 | mclang-format.py | Python script. Called by installed hook. Checks formatting in changed code. | - |
 | mclang-tidy.py | Python script. Called by installed hook. Checks for compilation errors. | - |
 
+For a tutorial on how to use these hooks, see [Milo wiki](https://wiki.milosolutions.com/index.php/Mclang-format_and_mclang-tidy)
+
+To quickly enable/ disable a git hook, you can use disableGitHook and enableGitHook
+scripts from sierdzio's bash [scripts](https://github.com/sierdzio/sierdzios-bash-scripts).
+
 ## Mobile
 
 | Name | Discription | Run directory |
