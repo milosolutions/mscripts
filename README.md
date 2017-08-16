@@ -12,7 +12,7 @@ Feel free to use them - well tested are ones located in "version", "hooks", "oth
 
 ## Version
 
-Please read [version/versionReadme](\ref versions)
+Please read [version/versionReadme.md](\ref versions)
 
 ## Hooks
 
@@ -22,7 +22,7 @@ Please read [version/versionReadme](\ref versions)
 | mclang-format.py | Python script. Called by installed hook. Checks formatting in changed code. | - |
 | mclang-tidy.py | Python script. Called by installed hook. Checks for compilation errors. | - |
 
-For a tutorial on how to use these hooks, see [documentation](\ref githooks)
+For a tutorial on how to use these hooks, see the [documentation](\ref githooks)
 
 To quickly enable/ disable a git hook, you can use disableGitHook and enableGitHook
 scripts from sierdzio's bash [scripts](https://github.com/sierdzio/sierdzios-bash-scripts).
