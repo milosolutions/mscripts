@@ -12,7 +12,7 @@ PROJECT_BRIEF = "Example scripts for project development"
 
 OUTPUT_DIRECTORY = doc/
 
-INPUT = README.md
+INPUT = README.md doc/gitHooks.md
 #EXCLUDE_PATTERNS = */something/*
 USE_MDFILE_AS_MAINPAGE = README.md
 MARKDOWN_SUPPORT = YES
