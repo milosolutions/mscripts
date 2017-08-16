@@ -9,14 +9,10 @@ import subprocess
 import urllib.request
 import json
 import glob
-
-# append qmake to path (maybe we could make this on the system side ?)
-os.environ["PATH"] += ":/home/milotoolsdev/development/qt-everywhere-opensource-src-5.7.0/qtbase/bin"
+import mconfig
 
 # variables
 MCLANG_TIDY_BUILD_DIR = "../mclang_tidy"
-API_TOKEN = ''
-GIT_URL = ''
 
 class ClangTidy:
     def run(self):
@@ -26,7 +22,7 @@ class ClangTidy:
 
         print("Running mclang-tidy...")
         pipe = subprocess.Popen(('git', 'diff', "-U0", sha), stdout=subprocess.PIPE, universal_newlines=True)
-        diff = subprocess.check_output(["clang-tidy-diff-3.8.py", "-p1", "-checks=*"], stdin=pipe.stdout, universal_newlines=True)
+        diff = subprocess.check_output([mconfig.TIDY_TOOL, "-p1", "-checks=*"], stdin=pipe.stdout, universal_newlines=True)
         print(diff)
         # validate diff and provide summary
         self.validate(diff)
@@ -34,8 +30,8 @@ class ClangTidy:
     # check for software which is needed to clang-tidy, see -> https://stackoverflow.com/questions/11210104/check-if-a-program-exists-from-a-python-script
     def check_dependencies(self):
         # first check for clang-tidy-diff-3.8.py
-        if which("clang-tidy-diff-3.8.py") is None: 
-            print("clang-tidy-diff-3.8.py is not installed or does not included in PATH")
+        if which(mconfig.TIDY_TOOL) is None:
+            print(mconfig.TIDY_TOOL + " is not installed or does not included in PATH")
             sys.exit(1)
         tool = "cmake" if os.path.exists("CMakeLists.txt") else "qmake"
         if tool is "cmake":    
@@ -95,10 +91,10 @@ class ClangTidy:
     # to find at least one which finished with success (better performance) 
     def pipelines(self, page=1):
         # url to retrieve Gitlab variables
-        url = '{0}/api/v4/projects/{1}/pipelines??per_page=20&page={1}'.format(GIT_URL).format(os.getenv("CI_PROJECT_ID"), page)
+        url = '{0}/api/v4/projects/{1}/pipelines??per_page=20&page={1}'.format(mconfig.GIT_URL).format(os.getenv("CI_PROJECT_ID"), page)
         # create the request object and set headers
         request = urllib.request.Request(url)
-        request.add_header('PRIVATE-TOKEN', API_TOKEN)
+        request.add_header('PRIVATE-TOKEN', mconfig.API_TOKEN)
         # make the request object
         response = urllib.request.urlopen(request)
         # convert bytes to string

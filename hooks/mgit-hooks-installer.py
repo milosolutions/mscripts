@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import stat
+import shutil
 
 PRE_COMMIT_HOOK_CONTENT = """#!/usr/bin/env python3
 import sys
@@ -14,6 +15,9 @@ sys.exit(res)
 
 class GitHooksInstaller:
     def run(self):
+        # create config file (not tracked by git)
+        shutil.copy2("mconfig-sample.py", "mconfig.py")
+
         os.chdir(".git/hooks")
         
         # create 'pre-commit' file and write content of hook
@@ -25,7 +29,7 @@ class GitHooksInstaller:
         os.chmod("pre-commit", st.st_mode | stat.S_IEXEC)
         
         print("pre-commit hook has been installed\n")
-        print("Please update API-TOKEN and GIT_URL variables in 'mclang-format.py' and 'mclang-tidy.py' files before using!")
+        print("Please update the configuration in milo/mscripts/hooks/mconfig.py!")
 
 # main
 if __name__ == "__main__":

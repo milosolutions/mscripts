@@ -5,11 +5,7 @@ from shutil import which
 import subprocess
 import urllib.request
 import json
-
-# append clang-format to path
-os.environ["PATH"] += ":/usr/lib/llvm-3.8/bin"
-API_TOKEN = ''
-GIT_URL = ''
+import mconfig
 
 class ClangFormat:
     def run(self):
@@ -17,7 +13,7 @@ class ClangFormat:
         sha = self.sha_to_compare()
 
         print("Running mclang-format...")
-        diff = subprocess.check_output(["git", "clang-format-3.8", "--diff", "--commit={0}".format(sha)], universal_newlines=True).strip()
+        diff = subprocess.check_output(["git", mconfig.FORMAT_TOOL, "--diff", "--commit={0}".format(sha)], universal_newlines=True).strip()
         print(diff)
         # validate diff and provide summary
         self.validate(diff)
@@ -25,8 +21,8 @@ class ClangFormat:
     # check for software which is needed to clang-format, see -> https://stackoverflow.com/questions/11210104/check-if-a-program-exists-from-a-python-script
     def check_dependencies(self):
         # first check for clang-format-3.8
-        if which("clang-format-3.8") is None: 
-            print("clang-format-3.8 is not installed or does not included in PATH")
+        if which(mconfig.FORMAT_TOOL) is None:
+            print(mconfig.FORMAT_TOOL + " is not installed or does not included in PATH")
             sys.exit(1)
 
     # retrieve sha to compare based on the place where we run script (gitlabCI/locally)
@@ -61,10 +57,10 @@ class ClangFormat:
     # to find at least one which finished with success (better performance) 
     def pipelines(self, page=1):
         # url to retrieve Gitlab variables
-        url = '{0}/api/v4/projects/{1}/pipelines??per_page=20&page={1}'.format(GIT_URL).format(os.getenv("CI_PROJECT_ID"), page)
+        url = '{0}/api/v4/projects/{1}/pipelines??per_page=20&page={1}'.format(mconfig.GIT_URL).format(os.getenv("CI_PROJECT_ID"), page)
         # create the request object and set headers
         request = urllib.request.Request(url)
-        request.add_header('PRIVATE-TOKEN', API_TOKEN)
+        request.add_header('PRIVATE-TOKEN', mconfig.API_TOKEN)
         # make the request object
         response = urllib.request.urlopen(request)
         # convert bytes to string
