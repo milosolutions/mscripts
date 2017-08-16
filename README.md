@@ -12,7 +12,7 @@ Feel free to use them - well tested are ones located in "version", "hooks", "oth
 
 ## Version
 
-Please read [version/README](\ref versions)
+Please read [version/versionReadme](\ref versions)
 
 ## Hooks
 
