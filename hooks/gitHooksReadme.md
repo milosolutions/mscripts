@@ -19,11 +19,13 @@ Git hooks {#githooks}
 
 ## Copy scripts
 
-Copy into your repository, scripts from https://git.milosolutions.com/milo-code-database/mscripts/tree/master/hooks
+If you have installed MCDB using the official intaller, you can skip this step.
+
+Copy hook scripts into your repository, scripts from https://git.milosolutions.com/milo-code-database/mscripts/tree/master/hooks You may need to adjust paths, as the scripts except to be in _milo/mscripts/hooks_ directory.
 
 ## Install hooks
 
-Install mclang-format.py and mclang-tidy.py as one pre-commit hook using mgit-hooks-installer.py script
+Install hooks using _mgit-hooks-installer.py_ script
 
 ```
 $ ./scripts/mgit-hooks-installer.py
@@ -32,7 +34,7 @@ pre-commit hook has been installed
 
 ## Modify config
 
-Modify milo/mscripts/hooks/mconfig.py and add your clang version number, and optionally Continuous Integration URL and API token.
+Modify _milo/mscripts/hooks/mconfig.py_ and add your clang version number, and optionally Continuous Integration URL and API token.
 
 Default clang version is 3.8, but it may differ on your machine.
 
@@ -43,13 +45,13 @@ git add .
 git commit -m "Provide good commit message"
 ```
 
-At that moment git will call pre-commit hook from .git/hooks, in our case it will call accordingly
+At that moment git will call pre-commit hook from _.git/hooks_, in our case it will call accordingly
 * mclang-format
 * mclang-tidy (only when previous step has finished succesfully)
 
 ## Results
 
-If your code has a proper formatting and does not contains any errors then you should see:
+If your code has proper formatting and does not contain any errors then you should see:
 
 ```
 $ git add .
@@ -69,8 +71,7 @@ No relevant changes found.
  1 file changed, 4 deletions(-)
 ```
 
-Otherwise you should see summary with the number of error(s) and/or warning(s) and details about places
-where these error(s) occurs.
+Otherwise you should see summary with the number of errors and/or warnings and details about places where these errors occur.
 
 * mclang-format error example:
 
@@ -133,7 +134,7 @@ bool authenticate(const QString &user) { return user == "MILO"; }
 
 # Integrating with GitLab CI
 
-Integrating mclang-format.py and mclang-tidy.py with GitLab CI architecture is very easy. All what you need is to create ''.gitlab-ci.yml'' script inside root folder of you repository, example of proper .gitlab-ci.yml script:
+Integrating mclang-format.py and mclang-tidy.py with GitLab CI architecture is very easy. All you need to do is to create _.gitlab-ci.yml_ script inside root folder of you repository, example of proper _.gitlab-ci.yml_ script:
 
 ```
 stages:
@@ -168,7 +169,7 @@ More about GitLab CI, structure of .yml script, stages, tags and other variables
 
 # Disable hooks temporarily
 
-If you have added some code which can not be formatted, for example you have custom annotations together with parser which require specific format of annotations, then you can use --no-verify git option, see https://git-scm.com/docs/githooks#_pre_commit
+If you have added some code which can not be formatted, for example you have custom annotations together with parser which require specific format of annotations, then you can use _--no-verify_ git option, see https://git-scm.com/docs/githooks#_pre_commit
 
 ```
 $ git add .
@@ -177,9 +178,9 @@ $ git commit -m "Update main.cpp" --no-verify
  1 file changed, 2 insertions(+), 2 deletions(-)
 ```
 
-# Know issues
+# Known issues
 
-For first local change (before "mclang_tidy" directory is created) it gives logs as below. When you try second time (again try commit) it will finish successfully.
+For first local change (before _mclang_tidy_ directory is created) it gives logs as below. When you try second time (try to commit again) it will finish successfully.
 
 * stdout:
 
