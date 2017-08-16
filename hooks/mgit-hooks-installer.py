@@ -16,7 +16,7 @@ sys.exit(res)
 class GitHooksInstaller:
     def run(self):
         # create config file (not tracked by git)
-        shutil.copy2("mconfig-sample.py", "mconfig.py")
+        shutil.copy2("milo/mscripts/hooks/mconfig-sample.py", "milo/mscripts/hooks/mconfig.py")
 
         os.chdir(".git/hooks")
         
