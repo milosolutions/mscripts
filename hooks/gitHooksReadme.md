@@ -17,22 +17,39 @@ Git hooks {#githooks}
 
 ## Step by step guide
 
-1. Copy into your repository, scripts from https://git.milosolutions.com/milo-code-database/mscripts/tree/master/hooks
-2. Install mclang-format.py and mclang-tidy.py as one pre-commit hook using mgit-hooks-installer.py script
+### Copy scripts
+
+Copy into your repository, scripts from https://git.milosolutions.com/milo-code-database/mscripts/tree/master/hooks
+
+### Install hooks
+
+Install mclang-format.py and mclang-tidy.py as one pre-commit hook using mgit-hooks-installer.py script
+
 ```
 $ ./scripts/mgit-hooks-installer.py
 pre-commit hook has been installed
 ```
-3. Modify milo/mscripts/hooks/mconfig.py and add your clang version number. It is not guessed automatically.
-4. After changes in your working repository , call like always
+
+### Modify config
+
+Modify milo/mscripts/hooks/mconfig.py and add your clang version number, and optionally Continuous Integration URL and API token.
+
+Default clang version is 3.8, but it may differ on your machine.
+
+### After changes in your working repository , call like always
+
 ```
 git add .
 git commit -m "Provide good commit message"
 ```
-at the moment git will call pre-commit hook from .git/hooks, in our case it will call accordingly
+
+At that moment git will call pre-commit hook from .git/hooks, in our case it will call accordingly
 * mclang-format
-* mclang-tidy (only when previous step was finished succesful)
-4. If your code has a proper formatting and does not contains any errors then you should see
+* mclang-tidy (only when previous step has finished succesfully)
+
+### Results
+
+If your code has a proper formatting and does not contains any errors then you should see:
 
 ```
 $ git add .
@@ -52,11 +69,10 @@ No relevant changes found.
  1 file changed, 4 deletions(-)
 ```
 
-
-otherwise you should see summary with the number of error(s) and/or warning(s) and details about places
+Otherwise you should see summary with the number of error(s) and/or warning(s) and details about places
 where these error(s) occurs.
 
-* mclang-format:
+* mclang-format error example:
 
 ```
 $ git add .
@@ -86,7 +102,7 @@ index 164d2d7..4981566 100644
 === 2 error(s) was found
 ```
 
-* mclang-tidy:
+* mclang-tidy error example:
 
 ```
 $ git add .
@@ -155,8 +171,8 @@ more about GitLab CI, structure of .yml script, stages, tags and other variables
 If you will have a code which can not be formatting, for example you have custom annotations together with parser which require specific format of annotations, then you can use --no-verify git option, see https://git-scm.com/docs/githooks#_pre_commit
 
 ```
-c50@c50-tosh ~/Desktop/02/CI-lab $ git add .
-c50@c50-tosh ~/Desktop/02/CI-lab $ git commit -m "Update main.cpp" --no-verify
+$ git add .
+$ git commit -m "Update main.cpp" --no-verify
 [master 1b010d2] Update main.cpp
  1 file changed, 2 insertions(+), 2 deletions(-)
 ```
