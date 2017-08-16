@@ -3,7 +3,7 @@ Git hooks {#githooks}
 
 [TOC]
 
-## Software requirements
+# Software requirements
 
 * Qt 5.x and Qt Creator - download the Qt Online Installer from https://www.qt.io/download-open-source/
 * Python3 (tested on Python 3.5.2)
@@ -15,13 +15,13 @@ Git hooks {#githooks}
 
 **Note:** on GitLab CI required software is already installed.
 
-## Step by step guide
+# Step by step guide
 
-### Copy scripts
+## Copy scripts
 
 Copy into your repository, scripts from https://git.milosolutions.com/milo-code-database/mscripts/tree/master/hooks
 
-### Install hooks
+## Install hooks
 
 Install mclang-format.py and mclang-tidy.py as one pre-commit hook using mgit-hooks-installer.py script
 
@@ -30,13 +30,13 @@ $ ./scripts/mgit-hooks-installer.py
 pre-commit hook has been installed
 ```
 
-### Modify config
+## Modify config
 
 Modify milo/mscripts/hooks/mconfig.py and add your clang version number, and optionally Continuous Integration URL and API token.
 
 Default clang version is 3.8, but it may differ on your machine.
 
-### After changes in your working repository , call like always
+## After changes in your working repository , call like always
 
 ```
 git add .
@@ -47,7 +47,7 @@ At that moment git will call pre-commit hook from .git/hooks, in our case it wil
 * mclang-format
 * mclang-tidy (only when previous step has finished succesfully)
 
-### Results
+## Results
 
 If your code has a proper formatting and does not contains any errors then you should see:
 
@@ -131,7 +131,7 @@ bool authenticate(const QString &user) { return user == "MILO"; }
 === 2 error(s) and 0 warning(s) was found
 ```
 
-## Integrating with GitLab CI
+# Integrating with GitLab CI
 
 Integrating mclang-format.py and mclang-tidy.py with GitLab CI architecture is very easy. All what you need is to create ''.gitlab-ci.yml'' script inside root folder of you repository, example of proper .gitlab-ci.yml script:
 
@@ -159,16 +159,16 @@ clang-tidy_job:
     - Docs
 ```
 
-more about GitLab CI, structure of .yml script, stages, tags and other variables:
+More about GitLab CI, structure of .yml script, stages, tags and other variables:
 * stages https://docs.gitlab.com/ee/ci/yaml/#stages
 * jobs https://docs.gitlab.com/ee/ci/yaml/#jobs
 * tags https://docs.gitlab.com/ee/ci/yaml/#tags
 * general guide about GitLab CI https://docs.gitlab.com/ce/ci/quick_start/README.html
 * general guide about .gitlab-ci.yml https://docs.gitlab.com/ee/ci/yaml/
 
-## How to temporary avoid clang-format and clang-tidy without removing them from hooks
+# Disable hooks temporarily
 
-If you will have a code which can not be formatting, for example you have custom annotations together with parser which require specific format of annotations, then you can use --no-verify git option, see https://git-scm.com/docs/githooks#_pre_commit
+If you have added some code which can not be formatted, for example you have custom annotations together with parser which require specific format of annotations, then you can use --no-verify git option, see https://git-scm.com/docs/githooks#_pre_commit
 
 ```
 $ git add .
@@ -177,10 +177,9 @@ $ git commit -m "Update main.cpp" --no-verify
  1 file changed, 2 insertions(+), 2 deletions(-)
 ```
 
-## Know issues
+# Know issues
 
-For any first change locally (before "mclang_tidy" directory is created) it gives logs as below.
-When you try second time (again try commit) it will finish successfully.
+For first local change (before "mclang_tidy" directory is created) it gives logs as below. When you try second time (again try commit) it will finish successfully.
 
 * stdout:
 
