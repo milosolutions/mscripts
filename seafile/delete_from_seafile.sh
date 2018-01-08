@@ -81,7 +81,7 @@ function get_token() {
 
 function remove_files() {
   echo "Removing $FILES"
-  curl -d "file_names=$FILES" -H "Authorization: Token $TOKEN" $DOMAIN/api2/repos/$REPO_ID/dir/?p=/$DIRECTORY
+  curl -d "file_names=$FILES" -H "Authorization: Token $TOKEN" $DOMAIN/api2/repos/$REPO_ID/fileops/delete/?p=/$DIRECTORY
 }
 
 #main
