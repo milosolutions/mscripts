@@ -12,6 +12,10 @@ function print_help() {
     echo "Seafile File Deleter";
     echo "MILO @ 2018"
     echo
+    echo "This script will remove files in a given Seafile repository,"
+    echo "you just need to provide a file list (you can get it from"
+    echo "get_files_from_seafile.sh script)."
+    echo
     echo "Usage: $0 -f FILES -s SERVER -r REPO [-d DIR] -u NAME -p PASS"
     echo "OR"
     echo "Usage: $0 -f FILES -s SERVER -r REPO [-d DIR] -t TOKEN"
@@ -43,7 +47,7 @@ function sanity_check() {
   fi
 
   if [ -z $DOMAIN ]; then
-    echo "Server address not set (-d)"
+    echo "Server address not set (-s)"
     ERROR=4; return
   fi
 

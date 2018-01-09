@@ -47,7 +47,7 @@ function sanity_check() {
   fi
   
   if [ -z $DOMAIN ]; then
-    echo "Server address not set (-d)"
+    echo "Server address not set (-s)"
     ERROR=4; return
   fi
 

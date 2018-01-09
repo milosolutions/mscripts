@@ -12,6 +12,13 @@ function print_help() {
     echo "Seafile Get File Names";
     echo "MILO @ 2018"
     echo
+    echo "This script will get names of all the files in a given Seafile"
+    echo "repository or optionally from a subdirectory."
+    echo
+    echo "Requires curl, jq and basename."
+    echo
+    echo "Flag '-n' is currently not implemented."
+    echo
     echo "Usage: $0 -o DATE -n NUMBER -s SERVER -r REPO [-d DIR] -u NAME -p PASS"
     echo "OR"
     echo "Usage: $0 -o DATE -n NUMBER -s SERVER -r REPO [-d DIR] -t TOKEN"
@@ -48,7 +55,7 @@ function sanity_check() {
   fi
 
   if [ -z $DOMAIN ]; then
-    echo "Server address not set (-d)"
+    echo "Server address not set (-s)"
     ERROR=4; return
   fi
 
