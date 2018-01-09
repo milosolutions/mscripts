@@ -19,9 +19,8 @@ function print_help() {
     echo
     echo "Flag '-n' is currently not implemented."
     echo
-    echo "Usage: $0 -o DATE -n NUMBER -s SERVER -r REPO [-d DIR] -u NAME -p PASS"
-    echo "OR"
     echo "Usage: $0 -o DATE -n NUMBER -s SERVER -r REPO [-d DIR] -t TOKEN"
+    echo
     echo "Parameters:"
     echo "  -o date    return files older than date. Must be something Unix"
     echo "             date understands, like \"2018-01-05T14:26\""
@@ -29,9 +28,7 @@ function print_help() {
     echo "  -s path    seafile server address"
     echo "  -r name    seafile repository id"
     echo "  -d path    library subdirectory for upload (default: /)"
-    echo "  -t token   seafile auth token (use token or user/password pair)"
-    echo "  -u name    seafile user (use token or user/password pair)"
-    echo "  -p pass    user password (use token or user/password pair)"
+    echo "  -t token   seafile auth token"
     echo
 }
 
@@ -65,34 +62,13 @@ function sanity_check() {
   fi
 
   if [ -z $TOKEN ]; then
-    if [ -z $USER ]; then
-      echo "Use Token (-t) or User (-u) and Password (-p) pair"
-      ERROR=6; return
-    fi
-
-    if [ -z $PASSWORD ]; then
-      echo "Use Token (-t) or User (-u) and Password (-p) pair"
-      ERROR=7; return
-    fi
-    echo "Token not set. Will try to get it automatically"
+    echo "Token not set. This script only works with tokens"
+    ERROR=111; return
   fi
-}
-
-function get_token() {
-  echo "obtaining token"
-  TOKEN=$(curl -d "username=$USER&password=$PASSWORD" $DOMAIN/api2/auth-token/)
-  #check if token keyword is in answer
-  echo $TOKEN | grep token
-  if [ $? -ne 0 ]; then
-    echo "Could not get token. Server answer: $TOKEN"
-    return
-  fi
-  #extract same token from answer - we now exactly where it is
-  TOKEN=${TOKEN:11:$(expr ${#TOKEN} - 13)}
 }
 
 function get_files() {
-  JSON=$(curl -s -H "Authorization: Token $TOKEN" -H 'Accept: application/json; indent=4' $DOMAIN/api2/repos/$REPO_ID/dir/?p=/$DIRECTORY)
+  JSON=$(curl -X GET -s -H "Authorization: Token $TOKEN" -H 'Accept: application/json; indent=4' -G "$DOMAIN/api2/repos/$REPO_ID/dir/?p=/$DIRECTORY" -d "t=f")
   # Array of files in DIRECTORY
   FILES=($(echo $JSON | jq -r '.[].name'))
   # Array of timestapms of FILES
@@ -126,7 +102,7 @@ function parse_results() {
 
 #main
 ERROR=0
-while getopts ":hno:s:r:d:t:u:p:" opt ;
+while getopts ":hno:s:r:d:t" opt ;
 do
     case $opt in
         h) print_help;
@@ -142,11 +118,7 @@ do
             ;;
         d) DIRECTORY=$OPTARG
             ;;
-	t) TOKEN=$OPTARG
-	    ;;
-        u) USER=$OPTARG
-            ;;
-        p) PASSWORD=$OPTARG
+        t) TOKEN=$OPTARG
             ;;
         *) echo "Wrong parameter";
            echo "For help run $0 -h";
@@ -160,12 +132,6 @@ if [ $ERROR != 0 ]; then
   exit $ERROR
 fi
 
-if [ -z $TOKEN ]; then
-  get_token
-  if [ -z $TOKEN ]; then
-    exit 10
-  fi
-fi
 get_files
 parse_results
 echo $RESULT

@@ -104,8 +104,8 @@ do
             ;;
         d) DIRECTORY=$OPTARG
             ;;
-	t) TOKEN=$OPTARG
-	    ;;
+        t) TOKEN=$OPTARG
+            ;;
         u) USER=$OPTARG
             ;;
         p) PASSWORD=$OPTARG
