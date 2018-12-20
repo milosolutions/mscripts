@@ -4,5 +4,3 @@
 #
 # Distributed under terms specified in LICENSE file
 #
-
-include(version/version.pri)
