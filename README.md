@@ -1,6 +1,7 @@
-[TOC]
+MScripts
+===
 
-Milo Code DB main ([online](https://docs.milosolutions.com/milo-code-db/main/) | [offline](\ref milodatabasemain))
+[Online documentation](https://docs.milosolutions.com/milo-code-db/mscripts)
 
 [Source code](https://github.com/milosolutions/mscripts)
 
