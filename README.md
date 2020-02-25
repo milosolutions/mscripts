@@ -13,6 +13,10 @@ Feel free to use them - well tested are ones located in "version", "hooks", "oth
 
 # Scripts
 
+## Version
+
+Please read [version/versionReadme.md](\ref versions)
+
 ## Hooks
 
 | Name | Discription | Run directory |
