@@ -5,7 +5,7 @@
 #
 # Seafile File Uploader
 #
-############################################ 
+############################################
 
 function print_help() {
     echo "Seafile File Uploader";
@@ -45,7 +45,7 @@ function sanity_check() {
     echo "File not exists: $FILE"
     ERROR=3; return
   fi
-  
+
   if [ -z $DOMAIN ]; then
     echo "Server address not set (-s)"
     ERROR=4; return
@@ -99,7 +99,7 @@ function get_link() {
 }
 
 function upload() {
-  if [ $OPERATION == update-link ] 
+  if [ $OPERATION == update-link ]
   then
     echo "Updating $FILE"
     curl -H "Authorization: Token $TOKEN" -F file=@$FILE -F filename=$FILENAME -F target_file=/$DIRECTORY/$FILENAME $UPLOAD_LINK
