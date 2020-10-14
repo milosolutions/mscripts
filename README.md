@@ -45,6 +45,7 @@ scripts from sierdzio's bash [scripts](https://github.com/sierdzio/sierdzios-bas
 | upload_to_seafile.ps1 | Powershell script. Upload file to seafile server. | any |
 | get_files_from_seafile.sh | Get file list from Seafile repository or folder | any |
 | delete_from_seafile.sh | Remove files from Seafile (using file list taken from get_files_from_seafile) | any |
+| upload.cmake | Uploads packages to Seafile from within cmake build system | - |
 
 ## Others
 
